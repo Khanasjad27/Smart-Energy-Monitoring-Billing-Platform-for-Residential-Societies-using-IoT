@@ -1,0 +1,28 @@
+const express = require("express");
+const app = express();
+const helmet = require("helmet");
+const morgan = require("morgan");
+const cors = require("cors");
+
+
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
+app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+app.use(morgan("combined"));
+app.use(express.json());
+
+app.get("/api/health", (req, res) => {
+    res.status(200).json({
+        message: "API is working properly"
+    })
+});
+
+app.get("/", (req, res) => {
+    res.send("API is working properly");
+});
+
+module.exports = app;
