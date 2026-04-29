@@ -4,6 +4,8 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
 
+const authRouter = require('./modules/auth/auth.route');
+
 
 app.use(cors({
     origin: "*",
@@ -14,6 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(express.json());
+
+app.use('/api/auth', authRouter);
 
 app.get("/api/health", (req, res) => {
     res.status(200).json({

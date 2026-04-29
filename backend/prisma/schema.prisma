@@ -4,12 +4,12 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // Builder => company which provide a Electricity service
@@ -45,8 +45,8 @@ model User {
   email     String   @unique
   password  String
   flats     Flat[]
-  societyId Int
-  society   Society  @relation(fields: [societyId], references: [id])
+  societyId Int? // ? ka matlab ki optional hai
+  society   Society? @relation(fields: [societyId], references: [id])
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 }
