@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const authRouter = require('./modules/auth/auth.route');
+const builderRouter = require('./modules/builder/builder.router');
 
 
 app.use(cors({
@@ -18,6 +19,7 @@ app.use(morgan("combined"));
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/builder', builderRouter);
 
 app.get("/api/health", (req, res) => {
     res.status(200).json({

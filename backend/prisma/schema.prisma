@@ -22,7 +22,8 @@ enum Role {
 
 model Builder {
   id        Int       @id @default(autoincrement()) // @id => Act as Primary key & @default(autoincrement()) => auto id
-  name      String
+  name      String    
+  location  String
   createdAt DateTime  @default(now()) // @default(now()) => Add current date n time
   societies Society[]
 }
