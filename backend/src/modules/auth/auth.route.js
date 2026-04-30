@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {loginUser, registerUser} = require('./auth.service');
+const { loginUser, registerUser } = require('./auth.service');
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
