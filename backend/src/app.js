@@ -8,8 +8,9 @@ const authRouter = require('./modules/auth/auth.route');
 const builderRouter = require('./modules/builder/builder.router');
 const societyRouter = require('./modules/society/society.router');
 const flatRouter = require('./modules/flat/flat.router');
-const readingRouter = require('./modules/Reading/reading.router');
+const readingRouter = require('./modules/reading/reading.router');
 const billingRouter = require('./modules/billing/billing.router');
+const dashboardRouter = require('./modules/dashboard/dashboard.router');
 
 
 app.use(cors({
@@ -28,6 +29,17 @@ app.use('/api/society', societyRouter);
 app.use('/api/flat', flatRouter);
 app.use('/api/reading', readingRouter);
 app.use('/api/billing', billingRouter);
+app.use('/api/dashboard', dashboardRouter);
+
+console.log({
+  authRouter,
+  builderRouter,
+  societyRouter,
+  flatRouter,
+  readingRouter,
+  billingRouter,
+  dashboardRouter
+});
 
 app.get("/api/health", (req, res) => {
     res.status(200).json({
