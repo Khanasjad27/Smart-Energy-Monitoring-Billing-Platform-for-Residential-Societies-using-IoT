@@ -90,3 +90,10 @@ const deleteSociety = async (req, res) => {
         });
     }
 }
+
+module.exports = {
+    getAllSocieties,
+    createSociety,
+    updateSociety,
+    deleteSociety
+}

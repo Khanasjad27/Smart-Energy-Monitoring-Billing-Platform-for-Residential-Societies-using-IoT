@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs')
 
 
 const registerUser = async (req, res) => {
-    const { email, firstName, lastName, password } = req.body;
-    if (!email || !firstName || !lastName || !password) {
+    const { email, firstName, lastName, password, role } = req.body;
+    if (!email || !firstName || !lastName || !password || !role) {
         return res.status(400).json({ message: "All Fields are required" });
     }
     try {
@@ -17,11 +17,11 @@ const registerUser = async (req, res) => {
 
         const newUser = await prisma.user.create({
             data: {
-                email, firstName, lastName, password: hashedPassword
+                email, firstName, lastName, password: hashedPassword, role
             }
         });
         // jwt.sign => used for creating a new token. 3 cheeze leta hai => 1. Data jo token me store karna hai (Payload), 2. Secret key, 3. kab expire hoga (ya optional hota hai)
-        const token = jwt.sign({ id: newUser.id, email: newUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: newUser.id, email: newUser.email, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return res.status(201).json({
             message: "User registered successfully",
             token
@@ -44,7 +44,7 @@ const loginUser = async (req, res) => {
             const isPasswordValid = await bcrypt.compare(password, user.password);
             // agar password valid hai to user ko authenticate karna hai aur token generate karna hai
             if (isPasswordValid) {
-                const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
+                const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
                 return res.status(200).json({ token });
             }
         }

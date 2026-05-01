@@ -133,3 +133,10 @@ const deleteFlat = async (req, res) => {
         });
     }
 }
+
+module.exports = {
+    getAllFlats,
+    createFlat,
+    updateFlat,
+    deleteFlat
+}

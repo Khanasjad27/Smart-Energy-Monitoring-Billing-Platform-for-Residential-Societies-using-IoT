@@ -8,6 +8,7 @@ const authRouter = require('./modules/auth/auth.route');
 const builderRouter = require('./modules/builder/builder.router');
 const societyRouter = require('./modules/society/society.router');
 const flatRouter = require('./modules/flat/flat.router');
+const readingRouter = require('./modules/Reading/reading.router');
 
 
 app.use(cors({
@@ -24,6 +25,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/builder', builderRouter);
 app.use('/api/society', societyRouter);
 app.use('/api/flat', flatRouter);
+app.use('/api/reading', readingRouter);
 
 app.get("/api/health", (req, res) => {
     res.status(200).json({
