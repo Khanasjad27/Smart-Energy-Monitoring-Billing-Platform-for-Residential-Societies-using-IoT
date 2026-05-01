@@ -70,7 +70,7 @@ units = latest reading - previous reading
 
 ## 📁 Project Structure
 
-
+```bash
 backend/
 │
 ├── src/
@@ -95,88 +95,84 @@ backend/
 ├── package.json
 ├── .env
 └── README.md
-🔌 Important API Endpoints
-🔐 Auth
-POST /api/auth/register
+```
+## 🔌 Important API Endpoints
 
-POST /api/auth/login
+### 🔐 Auth
+- POST `/api/auth/register`
+- POST `/api/auth/login`
 
-🏢 Builder
-POST /api/builder
+### 🏢 Builder
+- POST `/api/builder`
 
-🏠 Society
-POST /api/society
+### 🏠 Society
+- POST `/api/society`
 
-🏢 Flat
-POST /api/flat
+### 🏢 Flat
+- POST `/api/flat`
 
-⚡ Reading
-POST /api/reading
+### ⚡ Reading
+- POST `/api/reading`
 
-💰 Billing
-GET /api/billing/:flatId
+### 💰 Billing
+- GET `/api/billing/:flatId`
+- GET `/api/billing/history/:flatId`
 
-GET /api/billing/history/:flatId
+### 📊 Dashboard
+- GET `/api/dashboard/:flatId`
+- GET `/api/dashboard/monthly/:flatId`
 
-📊 Dashboard
-GET /api/dashboard/:flatId
+---
 
-GET /api/dashboard/monthly/:flatId
+## ⚙️ Setup Instructions
 
-⚙️ Setup Instructions
-1️⃣ Clone Repository
+### 1️⃣ Clone Repository
+```bash
 git clone <your-repo-link>
 cd backend
-2️⃣ Install Dependencies
+```
+### 2️⃣ Install Dependencies
+```bash
 npm install
-3️⃣ Setup Environment Variables
-Create .env file:
-
+```
+### 3️⃣ Setup Environment Variables
+```bash
+Create a .env file:
 DATABASE_URL=postgresql://user:password@localhost:5432/db_name
 JWT_SECRET=your_secret
-4️⃣ Run Database Migration
+``` 
+### 4️⃣ Run Database Migration
+```bash
 npx prisma migrate dev
-5️⃣ Start Server
+```
+### 5️⃣ Start Server
+```bash
 npm run dev
-Server runs at:
+Server runs at: http://localhost:5000
+```
+### 🧪 Sample Flow
+- Register user
+- Login → get JWT token
+- Create builder → society → flat
+- Add meter readings
+- Generate bill
+- View dashboard data
 
-http://localhost:5000
-🧪 Sample Flow
-Register user
+### 🎯 Future Improvements
+- Frontend (React Dashboard)
+- Payment Integration
+- Smart IoT Device Integration
+- Tier-based billing (slabs)
+- Mobile app support
 
-Login → get JWT token
+### 👨‍💻 Author
+ **Asjad Khan**
 
-Create builder → society → flat
+### ⭐ Summary
+- This project demonstrates:
+- Backend system design
+- Real-world business logic (billing)
+- Database modeling (relations)
+- API security (JWT + RBAC)
+- Clean modular architecture
 
-Add meter readings
-
-Generate bill
-
-View dashboard data
-
-🎯 Future Improvements
-Frontend (React Dashboard)
-
-Payment Integration
-
-Smart IoT Device Integration
-
-Tier-based billing (slabs)
-
-Mobile app support
-
-👨‍💻 Author
-Asjad Khan
-
-⭐ Summary
-This project demonstrates:
-
-Backend system design
-
-Real-world business logic (billing)
-
-Database modeling (relations)
-
-API security (JWT + RBAC)
-
-Clean modular architecture
