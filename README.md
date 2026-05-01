@@ -1,23 +1,35 @@
+
 # ⚡ Smart Energy Monitoring & Billing Platform (IoT)
 
 A full-stack backend system for managing electricity consumption, billing, and analytics for residential societies using IoT-based meter readings.
 
 ---
 
-## 🚀 Features
+## 🚀 Overview
+
+This project simulates a real-world electricity management system where:
+
+- Meter readings are recorded per flat
+- Bills are automatically generated
+- Users can track electricity usage
+- Admins manage societies and infrastructure
+
+---
+
+## 🧠 Key Features
 
 ### 🔐 Authentication & Authorization
 - JWT-based authentication
-- Role-based access control (RBAC)
-  - USER
-  - SOCIETY_ADMIN
-  - BUILDER_ADMIN
+- Role-Based Access Control (RBAC)
+  - USER → access own flat only
+  - SOCIETY_ADMIN → manage society
+  - BUILDER_ADMIN → full access
 
 ---
 
 ### 🏢 Core Modules
 - Builder Management
-- Society Management
+- Society Management (with dynamic rate per unit)
 - Flat Management
 - User Management
 
@@ -25,96 +37,106 @@ A full-stack backend system for managing electricity consumption, billing, and a
 
 ### ⚡ Meter Reading System
 - Add meter readings per flat
-- Chronological tracking of readings
-- Validation to prevent invalid readings
+- Ensures readings are increasing
+- Stores historical data
 
 ---
 
 ### 💰 Billing System
-- Automatic bill generation using meter readings
-- Dynamic rate per society
-- Prevent duplicate bill generation
+- Calculates consumption:
+units = latest reading - previous reading
+
+- Uses dynamic rate (per society)
+- Prevents duplicate bill generation
 - Stores billing history
 
 ---
 
 ### 📊 Dashboard & Analytics
-- Total consumption per flat
+- Total units consumed per flat
 - Total billing amount
-- Monthly usage data (graph-ready API)
+- Monthly usage (graph-ready API)
 
 ---
 
-## 🧠 Tech Stack (PERN)
+## 🧰 Tech Stack (PERN)
 
 - **PostgreSQL** → Database  
 - **Express.js** → Backend framework  
 - **Node.js** → Runtime  
-- **Prisma ORM** → Database access  
+- **Prisma ORM** → Database ORM  
 
 ---
 
 ## 📁 Project Structure
+
+
 backend/
-src/
-modules/
-auth/
-builder/
-society/
-flat/
-reading/
-billing/
-dashboard/
-middleware/
-config/
+│
+├── src/
+│   ├── modules/
+│   │   ├── auth/
+│   │   ├── builder/
+│   │   ├── society/
+│   │   ├── flat/
+│   │   ├── reading/
+│   │   ├── billing/
+│   │   └── dashboard/
+│   │
+│   ├── middleware/
+│   ├── config/
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── prisma/
+│   └── schema.prisma
+│
+├── package.json
+├── .env
+└── README.md
+🔌 Important API Endpoints
+🔐 Auth
+POST /api/auth/register
 
+POST /api/auth/login
 
----
+🏢 Builder
+POST /api/builder
 
-## 🔌 API Endpoints (Important)
+🏠 Society
+POST /api/society
 
-### Auth
-- POST `/api/auth/register`
-- POST `/api/auth/login`
+🏢 Flat
+POST /api/flat
 
-### Builder
-- CRUD `/api/builder`
+⚡ Reading
+POST /api/reading
 
-### Society
-- CRUD `/api/society`
+💰 Billing
+GET /api/billing/:flatId
 
-### Flat
-- CRUD `/api/flat`
+GET /api/billing/history/:flatId
 
-### Reading
-- POST `/api/reading`
+📊 Dashboard
+GET /api/dashboard/:flatId
 
-### Billing
-- GET `/api/billing/:flatId`
-- GET `/api/billing/history/:flatId`
+GET /api/dashboard/monthly/:flatId
 
-### Dashboard
-- GET `/api/dashboard/:flatId`
-- GET `/api/dashboard/monthly/:flatId`
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone Repo
-```bash
+⚙️ Setup Instructions
+1️⃣ Clone Repository
 git clone <your-repo-link>
 cd backend
-2. Install Dependencies
+2️⃣ Install Dependencies
 npm install
-3. Setup Environment Variables
-Create .env:
+3️⃣ Setup Environment Variables
+Create .env file:
 
 DATABASE_URL=postgresql://user:password@localhost:5432/db_name
 JWT_SECRET=your_secret
-4. Run Migration
+4️⃣ Run Database Migration
 npx prisma migrate dev
-5. Start Server
+5️⃣ Start Server
 npm run dev
 Server runs at:
 
@@ -122,7 +144,7 @@ http://localhost:5000
 🧪 Sample Flow
 Register user
 
-Login → get token
+Login → get JWT token
 
 Create builder → society → flat
 
@@ -130,18 +152,31 @@ Add meter readings
 
 Generate bill
 
-View dashboard & analytics
+View dashboard data
 
 🎯 Future Improvements
 Frontend (React Dashboard)
 
-Role-based UI
+Payment Integration
 
-Graph enhancements
+Smart IoT Device Integration
 
-Rate slabs (tier pricing)
+Tier-based billing (slabs)
 
-Payment integration
+Mobile app support
 
 👨‍💻 Author
 Asjad Khan
+
+⭐ Summary
+This project demonstrates:
+
+Backend system design
+
+Real-world business logic (billing)
+
+Database modeling (relations)
+
+API security (JWT + RBAC)
+
+Clean modular architecture
