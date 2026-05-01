@@ -62,5 +62,15 @@ model Flat {
   ownerId    Int
   owner      User     @relation(fields: [ownerId], references: [id])
   createdAt  DateTime @default(now())
-   @@unique([flatNumber, floor , societyId]) // @id ek hi baar use ho sakti hai therefore isko unique batane keliya aise kiya hai
+  @@unique([flatNumber, floor , societyId]) // @id ek hi baar use ho sakti hai therefore isko unique batane keliya aise kiya hai
+
+  meterReadings MeterReading[]
+}
+
+model MeterReading {
+  id          Int  @id @default(autoincrement())
+  flatId      Int
+  flat        Flat @relation(fields: [flatId], references: [id])
+  unit        Int
+  createdAt   DateTime @default(now())
 }
