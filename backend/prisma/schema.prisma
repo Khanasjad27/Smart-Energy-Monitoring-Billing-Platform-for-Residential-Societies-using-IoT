@@ -37,6 +37,7 @@ model Society {
   builderId Int
   builder   Builder  @relation(fields: [builderId], references: [id]) // use to build relationship
   createdAt DateTime @default(now())
+  
 }
 
 model User {
@@ -54,11 +55,12 @@ model User {
 
 model Flat {
   id         Int      @id @default(autoincrement())
-  flatNumber Int
-  floor      Int
+  flatNumber Int      
+  floor      Int     
   societyId  Int
   society    Society  @relation(fields: [societyId], references: [id])
   ownerId    Int
   owner      User     @relation(fields: [ownerId], references: [id])
   createdAt  DateTime @default(now())
+   @@unique([flatNumber, floor , societyId]) // @id ek hi baar use ho sakti hai therefore isko unique batane keliya aise kiya hai
 }
