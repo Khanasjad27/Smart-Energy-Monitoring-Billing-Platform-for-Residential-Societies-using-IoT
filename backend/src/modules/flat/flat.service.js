@@ -134,8 +134,34 @@ const deleteFlat = async (req, res) => {
     }
 }
 
+const getFlatsByUser = async (req, res) => {
+    try {
+        const flats = await prisma.flat.findMany({ where: { ownerId: req.user.id } });
+        return res.status(200).json(flats);
+    } catch (error) {
+        return res.status(500).json({ message: `Server error : ${error.message}` });
+    }
+};
+
+const getFlatsBySociety = async (req, res) => {
+    try {
+        // Fetch the user from DB to get their societyId since it's not in the JWT token payload
+        const adminUser = await prisma.user.findUnique({ where: { id: req.user.id } });
+
+        if (!adminUser || !adminUser.societyId) {
+             return res.status(400).json({ message: "No society associated with this admin" });
+        }
+        const flats = await prisma.flat.findMany({ where: { societyId: adminUser.societyId } });
+        return res.status(200).json(flats);
+    } catch (error) {
+        return res.status(500).json({ message: `Server error : ${error.message}` });
+    }
+};
+
 module.exports = {
     getAllFlats,
+    getFlatsByUser,
+    getFlatsBySociety,
     createFlat,
     updateFlat,
     deleteFlat

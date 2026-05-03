@@ -3,7 +3,7 @@ const prisma = require('../../config/prisma');
 const getAllSocieties = async (req, res) => {
     try {
         const allSocieties = await prisma.society.findMany();
-        return res.status(200).json({ allSocieties })
+        return res.status(200).json(allSocieties);
     } catch (error) {
         return res.status(500).json({
             message: `Server error : ${error.message}`

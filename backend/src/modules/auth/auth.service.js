@@ -54,7 +54,48 @@ const loginUser = async (req, res) => {
     }
 }
 
+const getMe = async (req, res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+            include: { society: { include: { builder: true } } }
+        });
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        // Remove password before sending
+        delete user.password;
+        
+        // Add organization name based on role
+        if (user.role === 'BUILDER_ADMIN' && user.society?.builder) {
+            user.organizationName = user.society.builder.name;
+        } else if (user.role === 'SOCIETY_ADMIN' && user.society) {
+            user.organizationName = user.society.name;
+        }
+
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({ message: `Server error: ${error.message}` });
+    }
+};
+
+const updateMe = async (req, res) => {
+    const { firstName, lastName } = req.body;
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id: req.user.id },
+            data: { firstName, lastName }
+        });
+        delete updatedUser.password;
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        return res.status(500).json({ message: `Server error: ${error.message}` });
+    }
+};
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getMe,
+    updateMe
 };

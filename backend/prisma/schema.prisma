@@ -75,6 +75,7 @@ model MeterReading {
   flatId      Int
   flat        Flat @relation(fields: [flatId], references: [id])
   unit        Int
+  date        DateTime @default(now()) @db.Date
   createdAt   DateTime @default(now())
 }
 

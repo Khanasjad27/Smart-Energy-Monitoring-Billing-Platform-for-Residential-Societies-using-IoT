@@ -1,7 +1,26 @@
 const prisma = require('../../config/prisma');
 
+const getAggregatedFlatIds = async (flatId, userId) => {
+    if (flatId === 'society') {
+        const adminUser = await prisma.user.findUnique({ where: { id: userId } });
+        if (!adminUser || !adminUser.societyId) throw new Error("No society associated");
+        const flats = await prisma.flat.findMany({ where: { societyId: adminUser.societyId } });
+        return flats.map(f => f.id);
+    }
+    if (flatId === 'builder') {
+        const flats = await prisma.flat.findMany();
+        return flats.map(f => f.id);
+    }
+    if (flatId.startsWith('society_')) {
+        const societyId = Number(flatId.split('_')[1]);
+        const flats = await prisma.flat.findMany({ where: { societyId } });
+        return flats.map(f => f.id);
+    }
+    return null;
+};
+
 const createMeterReading = async (req, res) => {
-    const { flatId, unit } = req.body;
+    const { flatId, unit, date } = req.body;
 
     if (!flatId || !unit || unit <= 0) {
         return res.status(400).json({
@@ -17,8 +36,13 @@ const createMeterReading = async (req, res) => {
             });
         }
 
+        const readingData = { unit, flatId: Number(flatId) };
+        if (date) {
+            readingData.date = new Date(date);
+        }
+
         const readingEntry = await prisma.meterReading.create({
-            data: { unit, flatId: Number(flatId) }
+            data: readingData
         });
 
         return res.status(201).json({
@@ -41,6 +65,27 @@ const getMeterReadingsByFlat = async (req, res) => {
         });
     }
     try {
+        const aggregatedIds = await getAggregatedFlatIds(flatId, req.user.id);
+        
+        if (aggregatedIds !== null) {
+            if (aggregatedIds.length === 0) {
+                return res.status(200).json({
+                    message: `Here is aggregated reading`,
+                    allReadings: []
+                });
+            }
+
+            const allReadings = await prisma.meterReading.findMany({ 
+                where: { flatId: { in: aggregatedIds } }, 
+                orderBy: { createdAt: "desc" },
+                take: 100 // limit to avoid massive payloads
+            });
+            return res.status(200).json({
+                message: `Here is aggregated reading`,
+                allReadings
+            });
+        }
+
         const flat = await prisma.flat.findUnique({ where: { id: Number(flatId) } });
         if (!flat) return res.status(400).json({ message: "Flat not found" });
 
